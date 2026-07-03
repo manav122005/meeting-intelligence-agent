@@ -1,0 +1,34 @@
+[0:00 — HOOK]
+How many times have you finished a great meeting, only to realize that writing up summaries, checking calendars, sending emails, and logging Jira tickets takes longer than the meeting itself? Today, I want to show you how we can completely automate this process securely.
+
+[0:20 — WHAT IT IS]
+I have built the Meeting Intelligence Agent. It is a multi-agent system designed for business operations that screens raw transcripts for security and PII, extracts action items and decisions, runs a human-in-the-loop review, and connects to enterprise tools via MCP to automate post-meeting workflows.
+
+[0:40 — SHOW THE BANNER]
+(show assets/cover_page_banner.png)
+As you can see on the screen, this is our project cover banner. The agent focuses on three main principles: automated summary generation, secure processing, and intelligent task scheduling.
+
+[1:00 — ARCHITECTURE]
+(show assets/architecture_diagram.png)
+Let's take a look at the system architecture.
+Our flow begins with the raw meeting transcript, which is sent to the Security Checkpoint node. The checkpoint screens the transcript, automatically redacting emails, phone numbers, and credentials, and checking for prompt injection.
+If the transcript passes the checkpoint, it is prepared and sent to our first specialized agent, the Transcript Analyzer.
+The Analyzer extracts the meeting date, attendees, decisions, and action items, using the MCP Server's calendar lookup tools to verify dates and attendees.
+Next, we pause at the Human Review Gate. This is our human-in-the-loop check.
+Once a human reviews and approves the data, the Summary & Notification Agent takes over. It uses directory search to find emails for each owner, registers the tasks as tickets via the MCP Server, and archives the final markdown report.
+
+[2:00 — LIVE DEMO]
+(switch to playground at localhost:18081)
+Let's run a live demo.
+I am going to paste a meeting transcript where Alice asks Bob to finalize the security audit by next Wednesday, July 10th, and Bob mentions his email, bob.jones@enterprise.com.
+When I submit this transcript, the Security Checkpoint immediately redacts Bob's email to protect his privacy.
+Then, you can see the agent has paused at the human review screen, displaying the extracted meeting title, date, decisions, and Bob's task.
+I will type 'approve' in the input box to confirm the details.
+Now, the Summary Agent runs. It generates an executive summary and drafts a follow-up email. In the background, it calls our MCP server to create a trackable task ticket for Bob and saves the archived markdown summary.
+
+[3:00 — SECURITY & MCP]
+(show logs or point to MCP tools)
+What makes this system robust is the dual layer of security and the Model Context Protocol server. The security checkpoint prevents data leaks and guards against injection. The MCP server connects the LLM safely to local enterprise data: listing calendar events, searching user directories, and creating Jira-style tickets.
+
+[3:30 — IMPACT / CLOSE]
+By automating the administrative tail of meetings, this agent saves hours of manual work every week, ensures team accountability, and keeps company data secure. Thank you!
